@@ -44,6 +44,7 @@ jobs:
       uses: einaregilsson/beanstalk-deploy@v22
       with:
         aws_access_key: ${{ steps.creds.outputs.aws-access-key-id }}
+        aws_secret_key: ${{ steps.creds.outputs.aws-secret-access-key }}
         aws_session_token: ${{ steps.creds.outputs.aws-session-token }}
         application_name: ${{ env.EB_APP_NAME }}
         environment_name: ${{ env.EB_ENV_NAME }}
