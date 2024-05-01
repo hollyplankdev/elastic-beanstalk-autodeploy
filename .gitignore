@@ -1,3 +1,6 @@
+# VSCode
+.vscode
+.vscode/*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
