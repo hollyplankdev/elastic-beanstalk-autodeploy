@@ -1,0 +1,30 @@
+# Deploys the release branch to AWS Elastic Beanstalk. Action origin from
+# https://github.com/marketplace/actions/beanstalk-deploy
+name: Deploy `release` to EB
+on:
+  push:
+    branches:
+    - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
+
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v22
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: elastic-beanstalk-autodeploy
+        environment_name: dev-env
+        version_label: ${{ github.event.head_commit.message }}
+        version_description: ${{ github.SHA }}
+        region: us-east-1
+        deployment_package: deploy.zip
