@@ -52,3 +52,4 @@ jobs:
         version_description: ${{ github.SHA }}
         region: ${{ env.AWS_REGION }}
         deployment_package: deploy.zip
+        wait_for_deployment: false
