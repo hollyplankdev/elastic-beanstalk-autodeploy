@@ -10,7 +10,7 @@ env:
   # The name of the Elastic Beanstalk application to deploy to
   EB_APP_NAME: elastic-beanstalk-autodeploy
   # The name of the environment contained within the Elastic Beanstalk app to deploy to  
-  EP_ENV_NAME: dev-env
+  EB_ENV_NAME: dev-env
   # What is the AWS IAM role that this action needs to assume once authenticated?
   AWS_ROLE: arn:aws:iam::022217129536:role/ElasticBeanstalkAutodeployRole
   # Which AWS region is our IAM role and Elastic Beanstalk app located in?
