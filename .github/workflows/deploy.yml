@@ -6,6 +6,21 @@ on:
     branches:
     - release
 
+env:
+  # The name of the Elastic Beanstalk application to deploy to
+  EB_APP_NAME: elastic-beanstalk-autodeploy
+  # The name of the environment contained within the Elastic Beanstalk app to deploy to  
+  EP_ENV_NAME: dev-env
+  # What is the AWS IAM role that this action needs to assume once authenticated?
+  AWS_ROLE: arn:aws:iam::022217129536:role/ElasticBeanstalkAutodeployRole
+  # Which AWS region is our IAM role and Elastic Beanstalk app located in?
+  AWS_REGION: us-east-1
+
+
+permissions:
+  id-token: write # Required for requesting JWT
+  contents: read  # Required for actions/checkout
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,17 +29,21 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v4
 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ env.AWS_ROLE }}
+        aws-region: ${{ env.AWS_REGION }}
+
     - name: Generate deployment package
       run: zip -r deploy.zip . -x '*.git*'
 
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v22
       with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: elastic-beanstalk-autodeploy
-        environment_name: dev-env
+        application_name: ${{ env.EB_APP_NAME }}
+        environment_name: ${{ env.EB_ENV_NAME }}
         version_label: ${{ github.event.head_commit.message }}
         version_description: ${{ github.SHA }}
-        region: us-east-1
+        region: ${{ env.AWS_REGION }}
         deployment_package: deploy.zip
