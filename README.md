@@ -73,13 +73,7 @@ Select a platform.
 2) .NET on Windows Server
 3) Docker
 4) Go
-5) Java
-6) Node.js
-7) PHP
-8) Packer
-9) Python
-10) Ruby
-11) Tomcat
+...
 (make a selection): 3
 
 Select a platform branch.
@@ -102,6 +96,16 @@ I typically don't use this, either.
 Do you want to set up SSH for your instances?
 (Y/n): n
 ```
+
+## Step 3 - Create Initial Deployment
+
+### Create EB Environment
+Create a new environment in our EB app, and deploy to it right away. This may take some time because your docker image will be built in AWS.
+```
+eb create prod
+```
+
+TODO - CONTINUE FROM HERE
 
 # Dev Log
 
