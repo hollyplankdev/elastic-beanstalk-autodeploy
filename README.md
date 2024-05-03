@@ -13,15 +13,95 @@ A fairly straightforward example showing a docker-compose application's auto-dep
 
 # Using in a Project
 
-## EB CLI
+## Step 1 - Configure Repo for Docker
+
+Make sure that you're repository is configured to work as an EB application (in the case of docker, ensure that there is a Dockerfile or docker-compose.yml in the root).
+
+I prefer docker-compose - so when I get here, I just ensure that running `docker-compose up --build` from the root of the repo works as expected. 
+
+
+## Step 2 - Initialize Elastic Beanstalk Application
 
 Make sure that you have the Elastic Beanstalk CLI [installed](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html) and [configured](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html).
 
-## Initialize Elastic Beanstalk Application
 
-Before we setup autodeploy, we need something to deploy TO. 
-- Make sure that you're repository is configured to work as an EB application (in the case of docker, ensure that there is a Dockerfile or docker-compose.yml in the root).
-- 
+### Initialize EB Application
+
+Initialize the Elastic Beanstalk application by running
+
+```
+eb init
+```
+
+### Choose a Region
+I typically stick to one region when prototyping, and choose the one closest to me.
+```
+Select a default region
+1) us-east-1 : US East (N. Virginia)
+2) us-west-1 : US West (N. California)
+3) us-west-2 : US West (Oregon)
+...
+(default is 3): 1
+```
+
+### Create an EB Application in AWS
+If you don't already have an application created, then `Create new Application`. This will be visible from the AWS console.
+```
+Select an application to use
+1) elastic-beanstalk-autodeploy
+2) ebs-docker-test-2
+3) getting-started-test
+4) [ Create new Application ]
+(default is 4): 4
+```
+
+If creating a new application, choose an appropriate name.
+```
+Enter Application Name
+(default is "motd-api-ts"): motd-api-ts-example
+```
+
+### Set Runtime Platform
+When applicable, EB CLI will try to guess what kind of project you're creating. This can be a little dicey when you're deploying a NodeJS app inside of docker. If you get a message like below, make sure to say no so that you can specify that you are creating a docker application. 
+```
+It appears you are using Node.js. Is this correct?
+(Y/n): n
+```
+```
+Select a platform.
+1) .NET Core on Linux
+2) .NET on Windows Server
+3) Docker
+4) Go
+5) Java
+6) Node.js
+7) PHP
+8) Packer
+9) Python
+10) Ruby
+11) Tomcat
+(make a selection): 3
+
+Select a platform branch.
+1) Docker running on 64bit Amazon Linux 2023
+2) ECS running on 64bit Amazon Linux 2023
+3) Docker running on 64bit Amazon Linux 2
+4) ECS running on 64bit Amazon Linux 2
+(default is 1): 1
+```
+
+### CodeCommit?
+I typically don't use this.
+```
+Do you wish to continue with CodeCommit? (Y/n): n
+```
+
+### SSH?
+I typically don't use this, either.
+```
+Do you want to set up SSH for your instances?
+(Y/n): n
+```
 
 # Dev Log
 
